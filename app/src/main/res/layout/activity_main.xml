@@ -4,11 +4,17 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Button android:id="@+id/btnStartService"
+    <Button android:id="@+id/btnGetCurrentBooks"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:text="List PDF"
-        android:onClick="sendMessage"/>
+        android:text="Get Current Books"
+        android:onClick="goToCurrentBooksActivity"/>
+
+    <Button android:id="@+id/btnToListDevicePDF"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="List Device PDF"
+        android:onClick="goToListDevicePDFActivity"/>
 
     <ProgressBar
         android:id="@+id/simpleProgressBar"
@@ -28,10 +34,7 @@
 
         </TextView>
     </ScrollView>
-    <!--<ListView
-        android:id="@+id/pdf_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
+
 
 
 

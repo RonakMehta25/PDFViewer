@@ -1,6 +1,7 @@
 package com.example.ronak.pdfviewer1;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -45,7 +46,29 @@ public class MainActivity extends AppCompatActivity {
         //ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 138);
 
         requestForPermission();
+        File Mainfolder = new File(Environment.getExternalStorageDirectory()+"/PDFViewer");
+        boolean success = true;
+        if (!Mainfolder.exists()) {
+            success = Mainfolder.mkdirs();
+        }
 
+        if (success) {
+            Log.d("Folder Creation","Success");
+            File propertiesFolder = new File(Environment.getExternalStorageDirectory()+"/PDFViewer/Properties_Folder");
+            if (!propertiesFolder.exists()) {
+                success = propertiesFolder.mkdirs();
+                Log.d("Property Folder","Success");
+            }
+            File booksFolder = new File(Environment.getExternalStorageDirectory()+"/PDFViewer/Books_Folder");
+            if (!booksFolder.exists()) {
+                success = booksFolder.mkdirs();
+                Log.d("Books Folder","Success");
+            }
+            // Do something on success
+        } else {
+            Log.d("Folder Creation","Failed");
+            // Do something else on failure
+        }
 
 
     }
@@ -66,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void goToListDevicePDFActivity(View view)
+    {
+        Intent intent = new Intent (this, listDevicePDFActivity.class);
+        startActivity(intent);
     }
 
     public void closeProgressBar()
@@ -142,18 +171,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view)
     {
-
-        //walkdir(Environment.getExternalStorageDirectory());
         readPDF();
-        /*String fileName[]=new String[fileNameList.size()];
-        fileNameList.toArray(fileName);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.activity_listview, fileName);
 
-        ListView listView = (ListView) findViewById(R.id.pdf_list);
-        listView.setAdapter(adapter);*/
     }
 
-
+    public void goToCurrentBooksActivity(View view)
+    {
+        Intent intent = new Intent (this, ListImportedBooksActivity.class);
+        startActivity(intent);
+    }
 
 
 
@@ -180,29 +206,7 @@ public class MainActivity extends AppCompatActivity {
         return (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, perm));
 
     }
-    public void walkdir(File dir) {
-        String pdfPattern = ".pdf";
 
-
-        File listFile[] = dir.listFiles();
-
-        if (listFile != null) {
-            for (int i = 0; i < listFile.length; i++) {
-
-                if (listFile[i].isDirectory()) {
-                    walkdir(listFile[i]);
-                } else {
-                    if (listFile[i].getName().endsWith(pdfPattern)){
-                        Log.d("FileName=",listFile[i].getName());
-                        fileNameList.add(listFile[i].getName());
-                        //Do what ever u want
-
-                    }
-                }
-            }
-        }
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
