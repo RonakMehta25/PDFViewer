@@ -1,6 +1,7 @@
 package com.example.ronak.pdfviewer1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -207,7 +208,7 @@ public class listDevicePDFActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position,View contentView,ViewGroup parent) {
+        public View getView(final int position,View contentView,ViewGroup parent) {
 
             ViewHolder holder = null;
             View itemView = contentView;
@@ -231,6 +232,18 @@ public class listDevicePDFActivity extends AppCompatActivity {
             fileNameView.setText(basicFileProperties.getFileName());
             TextView filePathView = (TextView) itemView.findViewById(R.id.filePath);
             filePathView.setText("path:"+basicFileProperties.getFilePath());*/
+
+            holder.llcontainer.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+
+                    Toast.makeText(listDevicePDFActivity.this, mDisplayedValues.get(position).getFileName(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent (listDevicePDFActivity.this, BookContentDisplayActivity.class);
+                    intent.putExtra("BasicFileProperties",mDisplayedValues.get(position));
+                    startActivity(intent);
+                }
+            });
+
             return contentView;
         }
 

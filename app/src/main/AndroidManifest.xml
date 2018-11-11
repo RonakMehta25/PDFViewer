@@ -25,9 +25,9 @@
             android:name=".listDevicePDFActivity"
             android:label="@string/title_activity_list_device_pdf"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            />
-        <activity android:name=".ListImportedBooksActivity"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ListImportedBooksActivity" />
+        <activity android:name=".BookContentDisplayActivity"></activity>
     </application>
 
 </manifest>

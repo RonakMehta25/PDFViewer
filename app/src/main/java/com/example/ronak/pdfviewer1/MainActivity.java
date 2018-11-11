@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ProgressBar simpleProgressBar=null;
     public final String[] EXTERNAL_PERMS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     public final int EXTERNAL_REQUEST = 138;
     ArrayList<String> fileNameList=new ArrayList<String>();
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        simpleProgressBar= findViewById(R.id.simpleProgressBar);
         //ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 138);
 
         requestForPermission();
@@ -80,16 +78,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void readPDF()
-    {
-        simpleProgressBar.setVisibility(View.VISIBLE);
-        PDFBoxResourceLoader.init(getApplicationContext());
-        new readingAsynTask().execute();
-        //simpleProgressBar.setVisibility(View.INVISIBLE);
 
-
-
-    }
 
     public void goToListDevicePDFActivity(View view)
     {
@@ -97,83 +86,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void closeProgressBar()
-    {
-        simpleProgressBar.setVisibility(View.INVISIBLE);
-    }
-
-    class readingAsynTask extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            File file = new File("/storage/emulated/0/Download/The-Secret-Rhonda-Byrne.pdf");
-            Log.d("FilenameRead","True");
-            try {
-                Log.d("Loading File","True");
-                PDDocument document = PDDocument.load(file);
-                Log.d("File Loaded","True");
-                Log.d("Getting File Text","True");
-                PDFTextStripper pdfStripper = new PDFTextStripper();
-                final String text = pdfStripper.getText(document);
-                Log.d("Got File Text","True");
-                Log.d("bookContent",text);
-                document.close();
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        TextView BookTextView = (TextView) findViewById(R.id.EntireBook);
-                        BookTextView.setText(text);
-                        closeProgressBar();
-                        // Stuff that updates the UI
-
-                    }
-                });
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        closeProgressBar();
-                        closeProgressBar();
-                        Toast.makeText(MainActivity.this, "Error in reading file", Toast.LENGTH_SHORT).show();
-                        // Stuff that updates the UI
-
-                    }
-                });
-
-            }
-
-            //Do some task
-            publishProgress ("");
-            return "";
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //Setup precondition to execute some task
-        }
 
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            //Update the progress of current task
-        }
 
-        @Override
-        protected void onPostExecute(String s) {
-            //Show the result obtained from doInBackground
-        }
-    }
-
-    public void sendMessage(View view)
-    {
-        readPDF();
-
-    }
 
     public void goToCurrentBooksActivity(View view)
     {

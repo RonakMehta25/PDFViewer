@@ -1,6 +1,8 @@
 package com.example.ronak.pdfviewer1;
 
-public class BasicFileProperties {
+import java.io.Serializable;
+
+public class BasicFileProperties implements Serializable {
 
     public String fileName;
     public String filePath;
