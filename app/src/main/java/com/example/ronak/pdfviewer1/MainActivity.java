@@ -3,34 +3,22 @@ package com.example.ronak.pdfviewer1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.text.PDFTextStripper;
-import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
+import com.example.ronak.pdfviewer1.Activity.ListImportedBooksActivity;
+import com.example.ronak.pdfviewer1.Activity.listDevicePDFActivity;
+import com.example.ronak.pdfviewer1.R;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,10 +71,16 @@ public class MainActivity extends AppCompatActivity {
     public void goToListDevicePDFActivity(View view)
     {
         Intent intent = new Intent (this, listDevicePDFActivity.class);
+        intent.putExtra("ListingMode","deviceBooks");
         startActivity(intent);
     }
 
-
+    public void goToimportedBooksActivity(View view)
+    {
+        Intent intent = new Intent (this, listDevicePDFActivity.class);
+        intent.putExtra("ListingMode","importedBooks");
+        startActivity(intent);
+    }
 
 
 

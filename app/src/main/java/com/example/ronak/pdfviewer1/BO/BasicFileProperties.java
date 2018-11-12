@@ -1,4 +1,4 @@
-package com.example.ronak.pdfviewer1;
+package com.example.ronak.pdfviewer1.BO;
 
 import java.io.Serializable;
 

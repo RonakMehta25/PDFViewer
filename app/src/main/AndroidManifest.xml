@@ -22,12 +22,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".listDevicePDFActivity"
+            android:name=".Activity.listDevicePDFActivity"
             android:label="@string/title_activity_list_device_pdf"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ListImportedBooksActivity" />
-        <activity android:name=".BookContentDisplayActivity"></activity>
+        <activity android:name=".Activity.ListImportedBooksActivity" />
+        <activity android:name=".Activity.BookContentDisplayActivity"></activity>
     </application>
 
 </manifest>

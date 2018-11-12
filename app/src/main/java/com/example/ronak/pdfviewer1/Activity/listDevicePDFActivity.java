@@ -1,22 +1,17 @@
-package com.example.ronak.pdfviewer1;
+package com.example.ronak.pdfviewer1.Activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -27,16 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tom_roush.pdfbox.pdmodel.PDDocument;
-import com.tom_roush.pdfbox.text.PDFTextStripper;
-
-import org.w3c.dom.Text;
+import com.example.ronak.pdfviewer1.BO.BasicFileProperties;
+import com.example.ronak.pdfviewer1.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class listDevicePDFActivity extends AppCompatActivity {
+    String listingMode="";
     ProgressBar listDevidePDFProgressBar=null;
     MyListAdapter adapter;
     ArrayList<BasicFileProperties> fileBasicPropertyList=new ArrayList<BasicFileProperties>();
@@ -46,6 +39,14 @@ public class listDevicePDFActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_device_pdf);
         listDevidePDFProgressBar= findViewById(R.id.listDevidePDFProgressBar);
         listDevidePDFProgressBar.setVisibility(View.VISIBLE);
+        if(getIntent().getExtras().get("ListingMode").equals("importedBooks"))
+        {
+            listingMode="importedBooks";
+        }
+        else
+        {
+            listingMode="deviceBooks";
+        }
         new listingAsynTask().execute();
 
 
@@ -78,6 +79,20 @@ public class listDevicePDFActivity extends AppCompatActivity {
 
     }
 
+    public void findAllImportedBooks()
+    {
+
+        File dir=new File(Environment.getExternalStorageDirectory()+"/PDFViewer/Books_Folder/");
+        File listFile[] = dir.listFiles();
+        if(listFile!=null)
+        {
+            for (int i = 0; i < listFile.length; i++) {
+                BasicFileProperties basicFilePropertiesObject = new BasicFileProperties(listFile[i].getName(),listFile[i].getPath());
+                fileBasicPropertyList.add(basicFilePropertiesObject);
+            }
+        }
+    }
+
     public void initializeSearchBar()
     {
         EditText SearchBar= (EditText) findViewById(R.id.bookDeviceSearch);
@@ -103,22 +118,27 @@ public class listDevicePDFActivity extends AppCompatActivity {
         listDevidePDFProgressBar.setVisibility(View.GONE);
     }
 
+
+
     class listingAsynTask extends AsyncTask<String,String,String> {
 
         @Override
         protected String doInBackground(String... params) {
 
-            Log.d("listing all pdf files","True");
+            if(listingMode.equals("deviceBooks")) {
+            Log.d("listing all pdf files", "True");
             try {
+
+
                 walkdir(Environment.getExternalStorageDirectory());
                 runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
-                        if(fileBasicPropertyList!=null && fileBasicPropertyList.size()!=0) {
+                        if (fileBasicPropertyList != null && fileBasicPropertyList.size() != 0) {
                             //String fileBasics[] = new String[fileBasicPropertyList.size()];
                             //fileBasicPropertyList.toArray(fileBasics);
-                            adapter=new MyListAdapter(listDevicePDFActivity.this,fileBasicPropertyList);
+                            adapter = new MyListAdapter(listDevicePDFActivity.this, fileBasicPropertyList);
                             //ArrayAdapter adapter = new ArrayAdapter<String>(listDevicePDFActivity.this, R.layout.activity_listview, fileBasics);
 
                             ListView listView = (ListView) findViewById(R.id.pdf_list);
@@ -146,7 +166,30 @@ public class listDevicePDFActivity extends AppCompatActivity {
                 });
 
             }
+        }
+        else
+            {
+                findAllImportedBooks();
+                runOnUiThread(new Runnable() {
 
+                    @Override
+                    public void run() {
+                        if (fileBasicPropertyList != null && fileBasicPropertyList.size() != 0) {
+                            //String fileBasics[] = new String[fileBasicPropertyList.size()];
+                            //fileBasicPropertyList.toArray(fileBasics);
+                            adapter = new MyListAdapter(listDevicePDFActivity.this, fileBasicPropertyList);
+                            //ArrayAdapter adapter = new ArrayAdapter<String>(listDevicePDFActivity.this, R.layout.activity_listview, fileBasics);
+
+                            ListView listView = (ListView) findViewById(R.id.pdf_list);
+                            listView.setAdapter(adapter);
+                        }
+                        closeProgressBar();
+                        initializeSearchBar();
+                        // Stuff that updates the UI
+
+                    }
+                });
+            }
             //Do some task
             publishProgress ("");
             return "";

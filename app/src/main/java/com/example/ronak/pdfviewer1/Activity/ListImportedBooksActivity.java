@@ -1,7 +1,8 @@
-package com.example.ronak.pdfviewer1;
+package com.example.ronak.pdfviewer1.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.ronak.pdfviewer1.R;
 
 public class ListImportedBooksActivity extends AppCompatActivity {
 

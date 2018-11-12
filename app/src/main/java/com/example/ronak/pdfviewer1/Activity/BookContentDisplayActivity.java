@@ -1,4 +1,4 @@
-package com.example.ronak.pdfviewer1;
+package com.example.ronak.pdfviewer1.Activity;
 
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -10,15 +10,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ronak.pdfviewer1.BO.BasicFileProperties;
+import com.example.ronak.pdfviewer1.R;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.text.PDFTextStripper;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
-import org.junit.rules.Stopwatch;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 
 public class BookContentDisplayActivity extends AppCompatActivity {
     BasicFileProperties basicFileProperties;
@@ -60,6 +62,20 @@ public class BookContentDisplayActivity extends AppCompatActivity {
 
     }
 
+    public void writeBasicPropertyFile()
+    {
+        try{
+            Properties prop = new Properties();
+            String name=basicFileProperties.getFileName();
+            OutputStream output =new FileOutputStream(new File(Environment.getExternalStorageDirectory()+"/PDFViewer/Properties_Folder/"+name.substring(0,name.length()-4)+"_config.properties"));
+            prop.setProperty("FileName",name.substring(0,name.length()-4));
+            prop.setProperty("FilePath",basicFileProperties.getFilePath());
+            prop.store(output,null);
+        }catch(IOException io) {
+        io.printStackTrace();
+    }
+
+    }
     public void closeProgressBar()
     {
         bookLoadingProgressBar.setVisibility(View.GONE);
@@ -88,6 +104,7 @@ public class BookContentDisplayActivity extends AppCompatActivity {
                 FileOutputStream fos = new FileOutputStream(new File(path+name.substring(0,name.length()-3)+"txt"));
                 fos.write(text.getBytes());
                 fos.close();
+                writeBasicPropertyFile();
                 Log.d("Time taken",duration+"");
                 document.close();
                 runOnUiThread(new Runnable() {
