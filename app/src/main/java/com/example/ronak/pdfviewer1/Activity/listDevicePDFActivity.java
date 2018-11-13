@@ -282,6 +282,14 @@ public class listDevicePDFActivity extends AppCompatActivity {
 
                     Toast.makeText(listDevicePDFActivity.this, mDisplayedValues.get(position).getFileName(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent (listDevicePDFActivity.this, BookContentDisplayActivity.class);
+                    if(listingMode.equals("deviceBooks"))
+                    {
+                        intent.putExtra("ListingMode","deviceBooks");
+                    }
+                    else
+                    {
+                        intent.putExtra("ListingMode","importedBooks");
+                    }
                     intent.putExtra("BasicFileProperties",mDisplayedValues.get(position));
                     startActivity(intent);
                 }
